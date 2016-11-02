@@ -12,7 +12,7 @@ import edu.princeton.cs.algs4.StdDraw;
  *
  * @author vayal
  */
-public class VQ {
+public class VQMain {
 
     /**
      * @param args the command line arguments
@@ -21,20 +21,19 @@ public class VQ {
         // TODO code application logic here
         
         String filename = args[0];
-        In in = new In(filename);  
+        In in = new In(filename);          
         
-        VectorQuantization vq = new VectorQuantization(10000, 1, 0, 5);
-        while (!in.isEmpty()) {
-            double x = in.readDouble();
-            double y = in.readDouble();    
-            vq.insertar(x, y);
-        }   
+        VectorQuantization vq = new VectorQuantization(filename,10000, 1, 0, 5);            
         
-        vq.entrenar();
+        vq.entrenar();//ejecuta el entrenamiento de VQ
         
         dibujar(vq);
     }
 
+    /**
+     * esta metodo sirve para inicializar el linzo para dibujar. cambiar metodo
+     * @param vector 
+     */
     private static void dibujar(VectorQuantization vector)
     {
         StdDraw.show(0);                                      

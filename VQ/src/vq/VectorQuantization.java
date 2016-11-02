@@ -5,6 +5,7 @@
  */
 package vq;
 
+import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdDraw;
 import java.util.ArrayList;
 import java.util.Random;
@@ -33,6 +34,12 @@ public class VectorQuantization
     public Random r;    
     //cantidad de elementos del dataset.
     public int tamaño;
+    // semilla aleatoria.
+    protected int seed;    
+    //Nombre del archivo para el dataset.
+    private String fileName;
+
+    
 
     /**
      * 
@@ -41,25 +48,47 @@ public class VectorQuantization
      * @param alfaFinal
      * @param k 
      */
-    public VectorQuantization(int tMax, double alfaInicial, double alfaFinal, int k)
+    public VectorQuantization(String fileName,int tMax, double alfaInicial, double alfaFinal, int k)
     {
         this.tMax = tMax;
         this.alfaInicial = alfaInicial;
         this.alfa = alfaInicial;
         this.alfaFinal = alfaFinal;
         this.k = k;
+        this.fileName = fileName;
         System.out.println(""+this.alfaInicial/this.tMax);
         this.r = new Random();
         this.prototipos = new ArrayList<Punto>();
         this.dataSet = new ArrayList<Punto>();
+        
+        this.newDataSet();
     }          
     
+    /**
+     * 
+     * @param seed 
+     */        
+    public void setSeed(int seed)
+    {
+        this.seed = seed;
+    }
+    
+    
+    private void newDataSet()
+    {
+        In in = new In(this.fileName);  
+        while (!in.isEmpty()) {//cargar dataset.
+            double x = in.readDouble();
+            double y = in.readDouble();    
+            this.insertar(x, y);//inserta punto 2D a la estructura de datos
+        }   
+    }
     /**
      * 
      * @param x
      * @param y 
      */
-    public void insertar(double  x, double y)
+    private void insertar(double  x, double y)
     {           
         Punto nuevoPunto = new Punto(x, y);
         this.dataSet.add(nuevoPunto);                       
