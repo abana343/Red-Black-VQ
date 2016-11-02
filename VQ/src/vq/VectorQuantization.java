@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- *
+ * 2d
  * @author vayal
  */
 public class VectorQuantization 
