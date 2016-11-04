@@ -8,6 +8,7 @@ package vq;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.JFileChooser;
+import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -48,8 +49,11 @@ public class VQInterface extends javax.swing.JFrame
         jTextField6 = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
         jTextField7 = new javax.swing.JTextField();
+        DPanel = new javax.swing.JDesktopPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(845, 584));
+        setSize(new java.awt.Dimension(0, 0));
 
         jButton1.setText("Cargar DataSet");
         jButton1.addActionListener(new java.awt.event.ActionListener()
@@ -139,12 +143,12 @@ public class VQInterface extends javax.swing.JFrame
                             .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(k_prototipos)
-                                .addComponent(jTextField4)
-                                .addComponent(jTextField5)
-                                .addComponent(jTextField6))
-                            .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jTextField6, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jTextField5, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jTextField4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
+                                .addComponent(k_prototipos, javax.swing.GroupLayout.Alignment.LEADING))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(68, 68, 68)
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -183,17 +187,30 @@ public class VQInterface extends javax.swing.JFrame
                 .addContainerGap(218, Short.MAX_VALUE))
         );
 
+        javax.swing.GroupLayout DPanelLayout = new javax.swing.GroupLayout(DPanel);
+        DPanel.setLayout(DPanelLayout);
+        DPanelLayout.setHorizontalGroup(
+            DPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 533, Short.MAX_VALUE)
+        );
+        DPanelLayout.setVerticalGroup(
+            DPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 508, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(DPanel))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(DPanel)
         );
 
         pack();
@@ -226,8 +243,8 @@ public class VQInterface extends javax.swing.JFrame
          
          file.showOpenDialog(this);
          /**abrimos el archivo seleccionado*/
-         System.out.println(""+file.getSelectedFile().getName());         
-         jTextField7.setText(file.getSelectedFile().getName());
+         System.out.println(""+file.getSelectedFile().getCanonicalPath());         
+         jTextField7.setText(file.getSelectedFile().getCanonicalPath());
          /**recorremos el archivo, lo leemos para plasmarlo
          *en el area de texto*/
         
@@ -255,6 +272,10 @@ public class VQInterface extends javax.swing.JFrame
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField5ActionPerformed
 
+    public void addVentana(JInternalFrame ventana)
+    {
+        this.DPanel.add(ventana);
+    }
     /**
      * @param args the command line arguments
      */
@@ -305,6 +326,7 @@ public class VQInterface extends javax.swing.JFrame
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JDesktopPane DPanel;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel4;

@@ -6,7 +6,6 @@
 package vq;
 
 import edu.princeton.cs.algs4.In;
-import edu.princeton.cs.algs4.StdDraw;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -165,9 +164,9 @@ public class VectorQuantization
     // draw all of the points to standard draw
     public void draw() {
         // draw the rectangle
+        StdDraw.clear();
         StdDraw.rectangle(0.5, 0.5, 0.5, 0.5);
-        if (this.dataSet.isEmpty()) return;              
-        
+        if (this.dataSet.isEmpty()) return;                      
         for (Punto punto : dataSet)
         {
             StdDraw.setPenColor(StdDraw.BLACK);

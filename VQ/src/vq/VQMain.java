@@ -6,7 +6,6 @@
 package vq;
 
 import edu.princeton.cs.algs4.In;
-import edu.princeton.cs.algs4.StdDraw;
 
 /**
  *
@@ -18,15 +17,11 @@ public class VQMain {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
-        
-        String filename = args[0];               
-        
-        VectorQuantization vq = new VectorQuantization(filename,10000, 1, 0, 5);            
-        
-        vq.entrenar();//ejecuta el entrenamiento de VQ
-        
-        vq.draw();
+        // TODO code application logic here        
+        VQInterface hola = new VQInterface();
+        hola.addVentana(StdDraw.getFrame());        
+        hola.setVisible(true);        
+       
     }
     
     public static void Ejecutar(String filename, int tmax, int aI, int aF, int k)
