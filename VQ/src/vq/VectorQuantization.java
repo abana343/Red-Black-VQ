@@ -104,10 +104,12 @@ public class VectorQuantization
     {
         int index=0;
         this.tamaño = this.dataSet.size();
+        Punto nuevoPrototipo;
         for (int i = 0; i < k; i++)//para cada prototipo
         {            
             index = r.nextInt(this.tamaño); //seleccionar al azar un elemento del conjunto de datos.
-            this.prototipos.add(this.dataSet.get(index));//asignar el elemento a un prototipo.
+            nuevoPrototipo = new Punto(this.dataSet.get(index).x, this.dataSet.get(index).y);
+            this.prototipos.add(nuevoPrototipo);//asignar el elemento a un prototipo.
         }
     }
     
@@ -118,10 +120,12 @@ public class VectorQuantization
         Punto pivote;
         int index=0;
         int bmu =0;
-        double bmuDistancia=Double.MAX_VALUE;
+        
         while(this.alfa>=0)
         {
-            // Elegimos el pivote de la iteracion.
+            
+            double bmuDistancia=Double.MAX_VALUE;//inicializamos valor maximo de distancia.
+            // Elegimos el pivote de la iteracion.            
             index = r.nextInt(this.tamaño);
             pivote = this.dataSet.get(index);
             
@@ -141,7 +145,7 @@ public class VectorQuantization
             
             // Migramos el BMU a la nueva posición.
             Punto aux=  this.prototipos.get(bmu);
-            this.prototipos.get(bmu).x= aux.x + this.alfa*(pivote.x-aux.x);
+            this.prototipos.get(bmu).x= aux.x + this.alfa*(pivote.x-aux.x); 
             this.prototipos.get(bmu).y= aux.y + this.alfa*(pivote.y-aux.y);
             
             // Decrementamos alfa.
@@ -185,8 +189,7 @@ public class VectorQuantization
             StdDraw.setPenColor(StdDraw.BLUE);            
             StdDraw.point(punto.x,punto.y);
         }
-        
-        System.out.println("alfa "+this.alfa);
+                
         
     }
     

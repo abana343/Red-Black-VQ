@@ -27,7 +27,7 @@ public class VQMain {
     public static void Ejecutar(String filename, int tmax, int aI, int aF, int k)
     {        
         
-        VectorQuantization vq = new VectorQuantization(filename,tmax, aI, aF, k);            
+        VectorQuantization vq = new VectorQuantization(filename,tmax,aF , aI, k);            
         
         vq.entrenar();//ejecuta el entrenamiento de VQ
         
