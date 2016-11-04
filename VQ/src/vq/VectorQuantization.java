@@ -61,7 +61,7 @@ public class VectorQuantization
         this.prototipos = new ArrayList<Punto>();
         this.dataSet = new ArrayList<Punto>();
         
-        this.newDataSet();
+        this.cargarDataSet();
     }          
     
     /**
@@ -73,8 +73,11 @@ public class VectorQuantization
         this.seed = seed;
     }
     
-    
-    private void newDataSet()
+    /**
+     * El metodo se encarga de leer los datos del archvivo e insertarlos en el 
+     * arraylist.
+     */
+    private void cargarDataSet()
     {
         In in = new In(this.fileName);  
         while (!in.isEmpty()) {//cargar dataset.
@@ -98,7 +101,7 @@ public class VectorQuantization
      * selecciona la colección de elementos que se utilizara para como prototipos del
      * problema.
      */
-    public void inicializar()
+    private void inicializar()
     {
         int index=0;
         this.tamaño = this.dataSet.size();
