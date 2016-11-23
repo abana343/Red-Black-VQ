@@ -28,7 +28,7 @@ public class VectorQuantization
     //variable de movimiento, la cual establece cuanto se debe mover un prototipo
     public double alfa;
     //numero de prototipos que se deben encontrar.
-    public int k;
+    private int k;
     //ramdom. para elegir valores al azar.
     public Random r;    
     //cantidad de elementos del dataset.
@@ -36,17 +36,25 @@ public class VectorQuantization
     // semilla aleatoria.
     protected int seed;    
     //Nombre del archivo para el dataset.
-    private String fileName;
+    protected String fileName;
 
     
-
+    public VectorQuantization(String fileName,int tMax, double alfaInicial, double alfaFinal)
+    {
+        this.fileName=fileName;
+        this.tMax = tMax;
+        this.alfaInicial = alfaInicial;
+        this.alfa = alfaInicial;
+        this.alfaFinal = alfaFinal;
+    }
+    
     /**
      * 
      * @param tMax
      * @param alfaInicial
      * @param alfaFinal
      * @param k 
-     */
+     */    
     public VectorQuantization(String fileName,int tMax, double alfaInicial, double alfaFinal, int k)
     {
         this.tMax = tMax;
@@ -76,7 +84,7 @@ public class VectorQuantization
      * El metodo se encarga de leer los datos del archvivo e insertarlos en el 
      * arraylist.
      */
-    private void cargarDataSet()
+    protected void cargarDataSet()
     {
         In in = new In(this.fileName);  
         while (!in.isEmpty()) {//cargar dataset.
@@ -114,7 +122,7 @@ public class VectorQuantization
     }
     
     
-    public ArrayList<Punto> entrenar()
+    public void entrenar()
     {
         this.inicializar();
         Punto pivote;
@@ -152,8 +160,8 @@ public class VectorQuantization
             this.alfa -= this.alfaInicial/this.tMax;
                                  
         }
-                
-        return this.prototipos;
+                               
+        //return this.prototipos;
     }
     
     public double distanciaEntreDosPuntoAlCuadrado(Punto pivote, Punto posibleBMU)            
@@ -163,35 +171,6 @@ public class VectorQuantization
         x= x*x;
         y= y*y;        
         return x+y;        
-    }         
-
-    // draw all of the points to standard draw
-    public void draw() {
-        // draw the rectangle
-        StdDraw.clear();
-        StdDraw.rectangle(0.5, 0.5, 0.5, 0.5);
-        if (this.dataSet.isEmpty()) return;                      
-        for (Punto punto : dataSet)
-        {
-            StdDraw.setPenColor(StdDraw.BLACK);
-            StdDraw.setPenRadius(.01);
-            StdDraw.point(punto.x,punto.y);
-        }
+    }                 
         
-        for (Punto punto : prototipos)
-        {            
-            
-            StdDraw.setPenRadius(.03);
-            StdDraw.setPenColor(StdDraw.RED);            
-            StdDraw.point(punto.x,punto.y);
-            
-            StdDraw.setPenRadius(.02);            
-            StdDraw.setPenColor(StdDraw.BLUE);            
-            StdDraw.point(punto.x,punto.y);
-        }
-                
-        
-    }
-    
-    
 }
