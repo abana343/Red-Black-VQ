@@ -16,10 +16,9 @@ public class VQKDTree extends VectorQuantization
 {
     
     public int h;
-    public double[] arbol;
-    public double[] arbol2;
-    public boolean[] comprobacion;
-    private int dimencion;
+    public double[] A;    
+    public boolean[] B;
+    private int d;
     private int tamañoArbol;
     
     
@@ -29,130 +28,70 @@ public class VQKDTree extends VectorQuantization
         this.h = h;
         
         this.r = new Random();        
-        this.dataSet = new ArrayList<Punto>();       
+        this.dataSet = new ArrayList<Vector>();       
         this.tamañoArbol();
-        this.arbol = new double[tamañoArbol];
-        this.arbol2 = new double[tamañoArbol];
-        this.comprobacion = new boolean[tamañoArbol];
-        this.init();
+        this.A = new double[tamañoArbol];        
+        this.B = new boolean[tamañoArbol];
+        
         this.cargarDataSet();
         this.tamaño = this.dataSet.size();
-        this.dimencion = 2;
+        this.d = 2;
     }
     
     
-    public void init()
+    public void initB()
     {
         for (int i = 0; i <tamañoArbol; i++)
         {
-            this.comprobacion[i]= false;
+            this.B[i]= false;
         }
     }
     /**
      * 
-     * @return cantidad de nodos del arbol.
+     * @return cantidad de nodos del A.
      */
     public void tamañoArbol()
     {
-        tamañoArbol = 0;
-        for (int i = 0; i < h; i++)
-        {
-            tamañoArbol += (int) Math.pow(2, i);
-        }        
+        tamañoArbol =(int) Math.pow(2, (double) h) - 1; //remplazar por (2^h)-1               
         System.out.println("h= "+h +"tamaño= "+tamañoArbol);
     }
     
     
     @Override
     public void entrenar()
-    {        
-        //asignamos un valor al azar a la raíz.
-        Punto a = this.dataSet.get(r.nextInt(this.tamaño));
-        this.arbol[0] = a.x;
-        this.arbol2[0] = a.y;
-        this.comprobacion[0] = true;
-        double dato=0;
-        double dato2=0;
-        
-        for (int t = 0; t < tMax; t++)
+    {          
+        int k = 0;        
+        this.initB();
+        for (int t = 0; t < this.tMax; t++)
         {
-            int posicion=0;
-            Punto x = this.dataSet.get(r.nextInt(this.tamaño));
-                        
+            int i = 0; // posición del árbol que actualmente esta ciendo analizada.
+            Vector x = this.dataSet.get(r.nextInt(this.tamaño));// se selecciona un elemento al azar del dataset 
             for (int j = 0; j < this.h; j++)
             {
-                //por mientras para elegir la dimension seleccionada
-                int i = j%this.dimencion;                
-                if(i==0)
+                k = j%this.d;// asignamos la dimencion que se trabajara en esta iteracion.
+                double xk = x.obtenerValor(k);//le aignamos un valor respecto a la dimención
+                if(!this.B[i])// si el valor no esta inicializado
                 {
-                    dato=x.x;
-                    dato2=x.y;
+                    this.A[i] = xk;//le aignamos un valor respecto a la dimención
+                    this.B[i] = true;//y lo activamos como inicializado.                    
+                    break;
+                }
+                
+                if(this.A[i] >= xk)//lo cambie a mayor o igual 
+                {                
+                    i = 2*i+1;
                 }
                 else
                 {
-                    dato=x.y;
-                    dato2=x.x;
+                    i = 2*i+2;
                 }                
-                
-                if(this.arbol[posicion] <= dato)
-                {
-                    migracionKD(posicion, dato);    
-                    int izq = (posicion*2)+1;
-                    if(izq<this.tamañoArbol && !this.comprobacion[izq])
-                    {                           
-                        if(i==0)
-                        {
-                            this.arbol[izq] = this.dataSet.get(r.nextInt(this.tamaño)).x;
-                            this.arbol2[izq] = this.dataSet.get(r.nextInt(this.tamaño)).y;
-                        }
-                        else
-                        {
-                            this.arbol[izq] = this.dataSet.get(r.nextInt(this.tamaño)).y;
-                            this.arbol2[izq] = this.dataSet.get(r.nextInt(this.tamaño)).x;
-                        }
-                        this.comprobacion[izq]= true;
-                        break;
-                    }
-                    posicion= izq;
-                }
-                else
-                {
-                    migracionKD(posicion, dato);   
-                    int der = (posicion+1)*2;
-                    if(der<this.tamañoArbol && !this.comprobacion[der])
-                    {
-                        if(i==0)
-                        {
-                            this.arbol[der] = this.dataSet.get(r.nextInt(this.tamaño)).x;
-                            this.arbol2[der] = this.dataSet.get(r.nextInt(this.tamaño)).y;
-                        }
-                        else
-                        {
-                            this.arbol[der] = this.dataSet.get(r.nextInt(this.tamaño)).y;
-                            this.arbol2[der] = this.dataSet.get(r.nextInt(this.tamaño)).x;
-                        }
-                        this.comprobacion[der]= true;
-                        break;
-                    }
-                    posicion = der;
-                }
-                
+                //generamos la migracion del punto A[padre].
+                this.A[(i-1)/2] =this.A[(i-1)/2]+ this.alfa*(xk-this.A[(i-1)/2]);    
+                //System.out.print(""+j+" ");                
             }
-            //migracionKD(posicion, dato);
-        }
-        
-        //Actualizamos valor de aprendizaje.
-        this.alfa -= this.alfaInicial/this.tMax;
-    }
-    
-    private void migracionKD(int posicion, double dato)
-    {
-        double valor = this.arbol[posicion];
-        this.arbol[posicion] = valor +this.alfa*(dato-valor);
-        //this.prototipos.get(bmu).x= aux.x + this.alfa*(pivote.x-aux.x); 
-    } 
-    
-    
-    
-    
+            //Actualizamos valor de aprendizaje.
+            this.alfa -= this.alfaInicial/this.tMax;            
+        }        
+                      
+    }                        
 }

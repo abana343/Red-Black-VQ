@@ -39,6 +39,20 @@ public class Punto
     {
         this.y = y;
     }
+    
+    //modificar clases para que sea generica para k-dimenciones.
+    public double obtenerValorPorDimencion(int k)
+    {
+        switch(k)
+        {
+            case 0:
+                return this.x;
+            case 1:
+                return this.y;
+        }
+        
+        return -1;
+    }
 
     @Override
     public String toString()

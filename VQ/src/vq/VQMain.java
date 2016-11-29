@@ -34,42 +34,44 @@ public class VQMain {
         vq.entrenar();//ejecuta el entrenamiento de VQ
         
         //vq.draw();
-        lienzo.drawLimpiar();
+        lienzo.LimpiarLienzo();
         lienzo.drawLista(vq.dataSet);
         lienzo.drawListaColor(vq.prototipos);
     }
 
     public static void EjecutarVQKD(String filename, int tmax, int aI, int aF, int h)
     {        
-        
         VQKDTree vq = new VQKDTree(filename,tmax,aF , aI, h);            
         
-        vq.entrenar();//ejecuta el entrenamiento de VQ
+        vq.entrenar();//ejecuta el entrenamiento de VQkd
         
-        lienzo.drawLimpiar();
+        
+        lienzo.LimpiarLienzo();
         VQMain.lienzo.drawLista(vq.dataSet);
-        VQMain.lienzo.drawVQKDTree(vq.arbol, vq.comprobacion);
-        //vq.draw();
-//        vq.draw(0, true,0);
-        
-        vq=null;
+        VQMain.lienzo.drawVQKDTree(vq.A, vq.B);
     }
 
     public static void EjecutarVQKDAzr(String filename, int tmax, int aI, int aF, int h)
     {        
-        
+                
+    }    
+
+    static void EjecutarVQKDALine(String filename, int tmax, int aI, int aF, int h)
+    {       
         VQKDTree vq = new VQKDTree(filename,tmax,aF , aI, h);            
         
-        vq.entrenar();//ejecuta el entrenamiento de VQ
+        vq.entrenar();//ejecuta el entrenamiento de VQkd
         
         
-        lienzo.drawLimpiar();
+        lienzo.LimpiarLienzo();
         VQMain.lienzo.drawLista(vq.dataSet);
-        VQMain.lienzo.drawVQKDTree(vq.arbol, vq.comprobacion,vq.arbol2);
-        //vq.draw();
-//        vq.draw(0, true,0);
+        VQMain.lienzo.DibujarVQKDTreeLinea(vq.A, vq.B);                
         
-        vq=null;
-    }    
+        /**
+        for (int i = 0; i < vq.A.length; i++)        
+        {
+            System.out.println(""+vq.A[i]);
+        }**/
+    }
      
 }

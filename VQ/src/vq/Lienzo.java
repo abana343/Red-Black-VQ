@@ -5,6 +5,7 @@
  */
 package vq;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 /**
@@ -24,13 +25,34 @@ public class Lienzo
     {
     }
     
+    public void DibujarLinea(double x,double y,double x2, double y2, Color color, double grosor)
+    {        
+        StdDraw.setPenRadius(grosor);
+        StdDraw.setPenColor(color);            
+        StdDraw.line(x,y,x2,y2);
+    }
+    
+    public void DibujarPunto(double x,double y, Color color, double grosor)
+    {        
+        StdDraw.setPenRadius(grosor);
+        StdDraw.setPenColor(color);            
+        StdDraw.point(x, y);
+    }
+    
+    public void DibujarPuntoRedBlue(double x,double y)
+    {
+        DibujarPunto(x, y, Color.RED, .03);
+        DibujarPunto(x, y, Color.BLUE, .02);
+    }
+    
+    
     /**
      * Dibuja el árbol con datos del nivel anterior.
      * @param posicion posicion del dato en el arbol.
      * @param dim dimencion que le toca dibujar
-     * @param dato dato padre para dibujar el punto.
+     * @param datoPadre dato padre para dibujar el punto.
      */
-    public void drawVQKDTree(int posicion,boolean dim,double dato)
+    public void drawVQKDTree(int posicion,boolean dim,double datoPadre)
     {
         int izq = (posicion*2)+1;
         int der = (posicion+1)*2;
@@ -42,25 +64,14 @@ public class Lienzo
         {
             this.drawVQKDTree(der,!dim,this.listaDouble[posicion]);
         }                
+        
         if(dim)
         {
-            StdDraw.setPenRadius(.03);
-            StdDraw.setPenColor(StdDraw.RED);            
-            StdDraw.point(this.listaDouble[posicion],dato);
-            
-            StdDraw.setPenRadius(.02);            
-            StdDraw.setPenColor(StdDraw.BLUE);            
-            StdDraw.point(this.listaDouble[posicion],dato);
+            DibujarPuntoRedBlue(this.listaDouble[posicion], datoPadre);           
         }
         else
         {
-            StdDraw.setPenRadius(.03);
-            StdDraw.setPenColor(StdDraw.RED);            
-            StdDraw.point(dato,this.listaDouble[posicion]);
-
-            StdDraw.setPenRadius(.02);            
-            StdDraw.setPenColor(StdDraw.BLUE);            
-            StdDraw.point(dato,this.listaDouble[posicion]);
+            DibujarPuntoRedBlue(datoPadre, this.listaDouble[posicion]);            
         }
     }
     
@@ -69,37 +80,26 @@ public class Lienzo
      * @param posicion posicion del dato en el arbol
      * @param dim dimencion que le toca dibujar.
      */
-    public void drawVQKDTree(int posicion,boolean dim)
+    public void drawVQKDTreeAzar(int posicion,boolean dim)
     {
         int izq = (posicion*2)+1;
         int der = (posicion+1)*2;        
         if(izq<this.tamañoLista && this.listaBoolean[izq])
         {
-            this.drawVQKDTree(izq,!dim);
+            this.drawVQKDTreeAzar(izq,!dim);
         }
         if(izq<this.tamañoLista && this.listaBoolean[der])
         {
-            this.drawVQKDTree(der,!dim);
+            this.drawVQKDTreeAzar(der,!dim);
         }                
+        
         if(dim)
         {
-            StdDraw.setPenRadius(.03);
-            StdDraw.setPenColor(StdDraw.RED);            
-            StdDraw.point(this.listaDouble[posicion],this.listaDouble2[posicion]);
-            
-            StdDraw.setPenRadius(.02);            
-            StdDraw.setPenColor(StdDraw.BLUE);            
-            StdDraw.point(this.listaDouble[posicion],this.listaDouble2[posicion]);
+            DibujarPuntoRedBlue(this.listaDouble[posicion], this.listaDouble2[posicion]);            
         }
         else
         {
-            StdDraw.setPenRadius(.03);
-            StdDraw.setPenColor(StdDraw.RED);            
-            StdDraw.point(this.listaDouble2[posicion],this.listaDouble[posicion]);
-
-            StdDraw.setPenRadius(.02);            
-            StdDraw.setPenColor(StdDraw.BLUE);            
-            StdDraw.point(this.listaDouble2[posicion],this.listaDouble[posicion]);
+            DibujarPuntoRedBlue(this.listaDouble2[posicion], this.listaDouble[posicion]);            
         }
     }
     
@@ -110,14 +110,14 @@ public class Lienzo
      * @param comprobacion lista de comprobación
      * @param valores2 lista con balores para el árbol al azar.
      */
-    public void drawVQKDTree(double[] valores,boolean[] comprobacion,double[] valores2)
+    public void drawVQKDTreeAzar(double[] valores,boolean[] comprobacion,double[] valores2)
     {
         this.listaDouble = valores;  
         this.listaBoolean=comprobacion;
         this.listaDouble2=valores2;
         this.tamañoLista =listaDouble.length;        
         
-        this.drawVQKDTree(0, true);               
+        this.drawVQKDTreeAzar(0, true);               
         
     }
     
@@ -140,37 +140,79 @@ public class Lienzo
     /**
      * Dibuja la lista completa con puntos negros.
     */     
-    public void drawLista(ArrayList<Punto> lista)            
+    public void drawLista(ArrayList<Vector> lista)            
     {                        
         if (lista.isEmpty()) return;                      
-        for (Punto punto : lista)
+        for (Vector punto : lista)
         {
-            StdDraw.setPenColor(StdDraw.BLACK);
-            StdDraw.setPenRadius(.01);
-            StdDraw.point(punto.x,punto.y);
+            DibujarPunto(punto.obtenerValor(0), punto.obtenerValor(1), Color.BLACK, .01);            
         }
         
     }
     
-    public void drawListaColor(ArrayList<Punto> lista)            
+    public void drawListaColor(ArrayList<Vector> lista)            
     {                
         if (lista.isEmpty()) return;                      
-        for (Punto punto : lista)
+        for (Vector punto : lista)
         {
-            StdDraw.setPenRadius(.03);
-            StdDraw.setPenColor(StdDraw.RED);            
-            StdDraw.point(punto.x,punto.y);
-            
-            StdDraw.setPenRadius(.02);            
-            StdDraw.setPenColor(StdDraw.BLUE);            
-            StdDraw.point(punto.x,punto.y);
+            DibujarPuntoRedBlue(punto.obtenerValor(0), punto.obtenerValor(1));            
         }
         
     }
     
-    public void drawLimpiar()
+    public void LimpiarLienzo()
     {
         StdDraw.clear();
+        StdDraw.setPenColor(StdDraw.BLACK);   
         StdDraw.rectangle(0.5, 0.5, 0.5, 0.5);
+    }
+
+    void DibujarVQKDTreeLinea(double[] valores,boolean[] comprobacion)
+    {        
+        this.listaDouble = valores;  
+        this.listaBoolean=comprobacion;                
+        this.tamañoLista =listaDouble.length;        
+        
+        this.DibujarVQKDTreeLinea(0, true,0,1,0,1,0); 
+    }
+
+    private void DibujarVQKDTreeLinea(int i, boolean dim, double Xmin, double Xmax, double Ymin, double Ymax, double datoPadre)
+    {
+        int izq = (i*2)+1;
+        int der = (i*2)+2;      
+        double valor = this.listaDouble[i];
+        if(izq<this.tamañoLista && this.listaBoolean[izq])
+        {
+            if(dim)
+            {
+                this.DibujarVQKDTreeLinea(izq,!dim,Xmin,valor,Ymin,Ymax,valor);//pasa dim y
+            }
+            else
+            {
+                this.DibujarVQKDTreeLinea(izq,!dim,Xmin,Xmax,Ymin,valor,valor);
+            }
+        }
+        if(der<this.tamañoLista && this.listaBoolean[der])
+        {
+            if(dim)
+            {
+                this.DibujarVQKDTreeLinea(der,!dim,valor,Xmax,Ymin,Ymax,valor);//pasa dim y
+            }
+            else
+            {
+                this.DibujarVQKDTreeLinea(der,!dim,Xmin,Xmax,valor,Ymax,valor);
+            }                
+        }    
+        
+        if(dim)
+        {            
+            DibujarPuntoRedBlue(valor, datoPadre);            
+            DibujarLinea(valor,Ymin,valor,Ymax, Color.RED, .005);                
+        }
+        else
+        {            
+            DibujarPuntoRedBlue(datoPadre,valor);             
+            DibujarLinea(Xmin,valor,Xmax,valor, Color.BLUE, .005);                     
+        }
     }
 }

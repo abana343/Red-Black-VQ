@@ -16,11 +16,11 @@ import java.util.Random;
 public class VectorQuantization 
 {
     // es el arreglo de datos que se ingresan
-    public ArrayList<Punto>  dataSet;
+    public ArrayList<Vector>  dataSet;
     //tiempo maximo que se debe demorar el algoritmo
     public int tMax;
     // lista de prototipos.
-    public ArrayList<Punto> prototipos;
+    public ArrayList<Vector> prototipos;
     //constante de movimiento, la cual establece de donde parte alfa.
     public double alfaInicial;
     //constante de movimiento, la cual especifica hasta donde llega el alfa     
@@ -65,8 +65,8 @@ public class VectorQuantization
         this.fileName = fileName;
         System.out.println(""+this.alfaInicial/this.tMax);
         this.r = new Random();
-        this.prototipos = new ArrayList<Punto>();
-        this.dataSet = new ArrayList<Punto>();
+        this.prototipos = new ArrayList<Vector>();
+        this.dataSet = new ArrayList<Vector>();
         
         this.cargarDataSet();
     }          
@@ -100,7 +100,7 @@ public class VectorQuantization
      */
     private void insertar(double  x, double y)
     {           
-        Punto nuevoPunto = new Punto(x, y);
+        Vector nuevoPunto = new Vector(x, y);
         this.dataSet.add(nuevoPunto);                       
     }
     
@@ -112,11 +112,11 @@ public class VectorQuantization
     {
         int index=0;
         this.tamaño = this.dataSet.size();
-        Punto nuevoPrototipo;
+        Vector nuevoPrototipo;
         for (int i = 0; i < k; i++)//para cada prototipo
         {            
             index = r.nextInt(this.tamaño); //seleccionar al azar un elemento del conjunto de datos.
-            nuevoPrototipo = new Punto(this.dataSet.get(index).x, this.dataSet.get(index).y);
+            nuevoPrototipo = new Vector(this.dataSet.get(index).obtenerValor(0), this.dataSet.get(index).obtenerValor(1));
             this.prototipos.add(nuevoPrototipo);//asignar el elemento a un prototipo.
         }
     }
@@ -125,7 +125,7 @@ public class VectorQuantization
     public void entrenar()
     {
         this.inicializar();
-        Punto pivote;
+        Vector pivote;
         int index=0;
         int bmu =0;
         
@@ -152,10 +152,12 @@ public class VectorQuantization
             }
             
             // Migramos el BMU a la nueva posición.
-            Punto aux=  this.prototipos.get(bmu);
-            this.prototipos.get(bmu).x= aux.x + this.alfa*(pivote.x-aux.x); 
-            this.prototipos.get(bmu).y= aux.y + this.alfa*(pivote.y-aux.y);
-            
+            Vector aux=  this.prototipos.get(bmu);
+            for (int i = 0; i < 2; i++)
+            {
+                this.prototipos.get(bmu).modificarValor(i,
+                        aux.obtenerValor(i) + this.alfa*(pivote.obtenerValor(i)-aux.obtenerValor(i))); 
+            }                                    
             // Decrementamos alfa.
             this.alfa -= this.alfaInicial/this.tMax;
                                  
@@ -164,10 +166,10 @@ public class VectorQuantization
         //return this.prototipos;
     }
     
-    public double distanciaEntreDosPuntoAlCuadrado(Punto pivote, Punto posibleBMU)            
+    public double distanciaEntreDosPuntoAlCuadrado(Vector pivote, Vector posibleBMU)            
     {
-        double x = pivote.x-posibleBMU.x;
-        double y = pivote.y-posibleBMU.y;
+        double x = pivote.obtenerValor(0)-posibleBMU.obtenerValor(0);
+        double y = pivote.obtenerValor(1)-posibleBMU.obtenerValor(1);
         x= x*x;
         y= y*y;        
         return x+y;        

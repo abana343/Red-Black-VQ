@@ -24,6 +24,7 @@ public class VQInterface extends javax.swing.JFrame
     public VQInterface()
     {
         initComponents();
+        this.jButton4.setEnabled(false);
     }
 
     /**
@@ -51,6 +52,7 @@ public class VQInterface extends javax.swing.JFrame
         jTextField7 = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
         DPanel = new javax.swing.JDesktopPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -148,6 +150,15 @@ public class VQInterface extends javax.swing.JFrame
             }
         });
 
+        jButton5.setText("EJE-KD-LIN");
+        jButton5.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -180,7 +191,9 @@ public class VQInterface extends javax.swing.JFrame
                             .addComponent(jButton2)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(87, 87, 87)
-                        .addComponent(jButton4)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -214,7 +227,9 @@ public class VQInterface extends javax.swing.JFrame
                 .addComponent(jButton3)
                 .addGap(18, 18, 18)
                 .addComponent(jButton4)
-                .addContainerGap(128, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jButton5)
+                .addContainerGap(87, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout DPanelLayout = new javax.swing.GroupLayout(DPanel);
@@ -317,6 +332,13 @@ public class VQInterface extends javax.swing.JFrame
                         Integer.parseInt(k_prototipos.getText()));
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton5ActionPerformed
+    {//GEN-HEADEREND:event_jButton5ActionPerformed
+        VQMain.EjecutarVQKDALine(jTextField7.getText(), Integer.parseInt(jTextField4.getText()),
+                        Integer.parseInt(jTextField6.getText()), Integer.parseInt(jTextField5.getText()),
+                        Integer.parseInt(k_prototipos.getText()));
+    }//GEN-LAST:event_jButton5ActionPerformed
+
     public void addVentana(JInternalFrame ventana)
     {
         this.DPanel.add(ventana);
@@ -329,6 +351,7 @@ public class VQInterface extends javax.swing.JFrame
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
